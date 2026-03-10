@@ -30,7 +30,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "SELECT COUNT(*) as duplicate_count \nFROM emails \nWHERE sender_email = '{{ $json.From }}' \nAND subject = '{{ $json.Subject }}' \nAND received_time >= NOW() - INTERVAL '24 hours';",
+        "query": "SELECT COUNT(*) as duplicate_count \nFROM emails \nWHERE sender_email = '{{ $('Prepare Email Data1').item.json.sender }}' \nAND subject = '{{ $('Prepare Email Data1').item.json.subject }}' \nAND received_time >= NOW() - INTERVAL '24 hours';",
         "options": {}
       },
       "id": "8275a981-4072-4b8c-a694-3429072f38f3",
@@ -613,15 +613,15 @@
           "values": [
             {
               "name": "sender",
-              "stringValue": "={{ $json.From }}"
+              "stringValue": "={{ $json.From || $json.from }}"
             },
             {
               "name": "subject",
-              "stringValue": "={{ $json.Subject }}"
+              "stringValue": "={{ $json.Subject || $json.subject }}"
             },
             {
               "name": "body",
-              "stringValue": "={{ $json.snippet }}"
+              "stringValue": "={{ $json.snippet || $json.textPlain }}"
             },
             {
               "name": "received_time",
@@ -1206,6 +1206,20 @@
       ],
       "id": "06fb5805-52ed-4b4a-a09f-72351c0ba682",
       "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2.1,
+      "position": [
+        -2240,
+        784
+      ],
+      "id": "6c5857e0-4dcc-41c7-9bf9-4c090bbe93e1",
+      "name": "Zoho Trigger",
+      "credentials": {}
     }
   ],
   "pinData": {},
@@ -1544,6 +1558,17 @@
           }
         ]
       ]
+    },
+    "Zoho Trigger": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -1551,7 +1576,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "0cef5579-17b1-46f4-ab94-9f83d48fccc0",
+  "versionId": "241d9bdf-926b-4bf3-9117-8f759c94e114",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "33d3118021c86740b1a15c617d0d9d55d063df19d7374e00a1b8953c3734f20d"
